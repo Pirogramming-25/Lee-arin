@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <header class="header">
+        <a href="{% url 'reviews-list' %}" class="review-list">my Movie reviews</a>
+        <a href="{% url 'reviews-create' %}" class="review-create">Add a New Review</a>
+    </header>
+
+    <!-- 자식 페이지마다 다른 내용이 들어올 자리 -->
+    <main>
+        {% block content %}
+        {% endblock %} <!-- 닫는 블럭 -->
+    </main>
+</body>
+
+</html>

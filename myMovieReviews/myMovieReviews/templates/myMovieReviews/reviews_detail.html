@@ -1,0 +1,32 @@
+{% extends 'myMovieReviews/base.html' %}
+{% block content %}
+
+<div class='detail-container'>
+    <div class="top">
+        <h2 class="list-movie-title">{{ review.title }}</h2>
+        <div class="btn-container">
+            <a href="{% url 'reviews-edit' review.pk %}" class="btn bedit">수정</a>
+            <a href="{% url 'reviews-delete' review.pk %}" class="btn delete">삭제</a>
+        </div>
+    </div>
+    <div class="middle">
+        <div class="detail-img">
+
+        </div>
+        <div class="detail-info">
+            <p class="detail-movie-title">개봉년도: {{ review.release_date|date:'Y년 m월 d일' }}</p>
+            <p class="detail-movie-title">감독: {{ review.director }}</p>
+            <p class="detail-movie-title">주연: {{ review.actors }}</p>
+            <p class="detail-movie-genre">장르: {{ review.genre }}</p>
+            <p class="detail-movie-rating">별점: {{ review.rating }}</p>
+            <p class="detail-movie-rating">러닝타임: {{ review.running_time }}</p>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="description">
+            <p class="detail-movie-description">{{ review.review_text }}</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'myMovieReviews/base.html' %}
+{% block content %}
+<div class='create-container'>
+    <div class="card create-review">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="title">제목:</label>
+                <input type="text" id="title" name="title" value="{{ review.title }}" required>
+
+                <label for="release_date">개봉년도:</label>
+                <input type="date" id="release_date" name="release_date" value="{{ review.release_date|date:'Y-m-d' }}"
+                    required>
+
+                <label for="genre">장르:</label>
+                <input type="text" id="genre" name="genre" value="{{ review.genre }}" required>
+
+                <label for="director">감독:</label>
+                <input type="text" id="director" name="director" value="{{ review.director }}" required>
+
+                <label for="actors">배우:</label>
+                <input type="text" id="actors" name="actors" value="{{ review.actors }}" required>
+
+                <label for="runningtime">러닝타임:</label>
+                <input type="number" id="runningtime" name="runningtime" value="{{ review.runningtime }}" required>
+
+                <label for="rating">별점:</label>
+                <input type="number" id="rating" name="rating" value="{{ review.rating }}" min="0" max="5" required>
+
+                <label for="review_text">리뷰:</label>
+                <textarea id="review_text" name="review_text" required>{{ review.review_text }}</textarea>
+
+
+            </div>
+            <button type="submit">저장</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
