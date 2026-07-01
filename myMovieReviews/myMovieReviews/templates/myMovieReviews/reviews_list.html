@@ -1,15 +1,25 @@
 {% extends 'myMovieReviews/base.html' %}
+{% load static %}
 {% block content %}
 <div class='list-container'>
     {% for review in reviews %}
     <div class="card reviews">
         <div class="list-movie-data">
+            <div class="poster">
+                {% if review.poster %}
+                <img src="{{ review.poster.url }}" alt="{{ review.title }}" width="150">
+                {% else %}
+                <img src="{% static 'default_poster.png' %}" alt="기본 포스터" width="150">
+                {% endif %}
+            </div>
             <h2 class="list-movie-title">
                 <a href="{% url 'reviews-detail' review.pk %}">{{ review.title }}</a>
             </h2>
-            <p class="list-movie-title">개봉년도: {{ review.release_date }}</p>
-            <p class="list-movie-genre">장르: {{ review.genre }}</p>
-            <p class="list-movie-rating">별점: {{ review.rating }}</p>
+            <div class="list-movie-data">
+                <p class="list-movie-title">개봉년도: {{ review.release_date }}</p>
+                <p class="list-movie-genre">장르: {{ review.genre }}</p>
+                <p class="list-movie-rating">별점: {{ review.rating }}</p>
+            </div>
         </div>
     </div>
     {% endfor %}

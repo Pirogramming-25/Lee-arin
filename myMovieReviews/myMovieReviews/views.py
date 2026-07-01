@@ -4,7 +4,7 @@ from .models import Movie
 
 # Create your views here.
 def reviews_list(request):
-    reviews = Movie.objects.all().order_by('-release_date')
+    reviews = Movie.objects.all().order_by('release_date')
     return render(request, 'myMovieReviews/reviews_list.html', {'reviews': reviews})
 
 def reviews_detail(request, pk):
@@ -21,6 +21,7 @@ def reviews_create(request):
         rating = request.POST.get('rating')
         runningtime = request.POST.get('runningtime')
         review_text = request.POST.get('review_text')
+        poster = request.FILES.get('poster')  # 업로드된 이미지 파일 가져오기
 
         movie = Movie(
             title=title,
@@ -30,7 +31,8 @@ def reviews_create(request):
             release_date=release_date,
             rating=rating,
             runningtime=runningtime,
-            review_text=review_text
+            review_text=review_text,
+            poster=poster
         )
         movie.save() # 옵젝을 db에 저장하는 함수
         return redirect('reviews-list') # redirect는 url로 이동 (cf. render는 html로 이동)
@@ -48,6 +50,9 @@ def reviews_edit(request, pk):
         review.rating = request.POST.get('rating')
         review.runningtime = request.POST.get('runningtime')
         review.review_text = request.POST.get('review_text')
+
+        if request.FILES.get('poster'):
+            review.poster = request.FILES.get('poster')  # 업로드된 이미지 파일 가져오기
 
         review.save()
         return redirect('reviews-detail', pk=review.pk)
