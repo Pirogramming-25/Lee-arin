@@ -362,3 +362,27 @@ main {
 .btn-back:hover {
     background-color: #d1d5db;
 }
+
+.sort-bar {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: -16px;
+    padding-bottom: 12px;
+    padding-right: 32px;
+}
+
+.sort-bar a {
+    text-decoration: none;
+    color: #4b5563;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.sort-bar a:hover {
+    color: #f77cc2;
+}
+
+.sort-bar a.active {
+    color: #f77cc2;
+}

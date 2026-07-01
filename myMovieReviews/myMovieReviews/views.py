@@ -4,8 +4,12 @@ from .models import Movie
 
 # Create your views here.
 def reviews_list(request):
-    reviews = Movie.objects.all().order_by('release_date')
-    return render(request, 'myMovieReviews/reviews_list.html', {'reviews': reviews})
+    sort = request.GET.get('sort', 'release_date')  
+    reviews = Movie.objects.all().order_by(sort)
+    return render(request, 'myMovieReviews/reviews_list.html', {
+        'reviews': reviews,
+        'sort': sort,        
+    })
 
 def reviews_detail(request, pk):
     review = get_object_or_404(Movie, pk=pk)

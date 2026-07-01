@@ -1,6 +1,13 @@
 {% extends 'myMovieReviews/base.html' %}
 {% load static %}
 {% block content %}
+<div class="sort-bar">
+    <a href="?sort=title" class="{% if sort == 'title' %}active{% endif %}">제목순</a>
+    <a href="?sort=-rating" class="{% if sort == '-rating' %}active{% endif %}">별점 높은순</a>
+    <a href="?sort=rating" class="{% if sort == 'rating' %}active{% endif %}">별점 낮은순</a>
+    <a href="?sort=-release_date" class="{% if sort == '-release_date' %}active{% endif %}">최신순</a>
+    <a href="?sort=release_date" class="{% if sort == 'release_date' %}active{% endif %}">오래된 순</a>
+</div>
 <div class='list-container'>
     {% for review in reviews %}
     <div class="card reviews">
