@@ -1,0 +1,388 @@
+/* ===== 공통 기본 ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    background-color: #f4f4f5;
+    color: #1f2937;
+    line-height: 1.5;
+}
+
+/* ===== 헤더 ===== */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 32px;
+    border-bottom: 1px solid #bab8b8;
+}
+
+.header a {
+    text-decoration: none;
+}
+
+.review-list {
+    color: #f77cc2;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.review-create {
+    color: #424242;
+    font-size: 15px;
+    padding: 8px 16px;
+    border-radius: 6px;
+}
+
+.review-create:hover {
+    color: #f77cc2;
+}
+
+main {
+    padding: 32px;
+}
+
+/* ===================================================
+   1. 리스트 페이지
+   - 카드가 왼쪽부터 채워지고, 꽉 차면 아래로 쌓임
+   - 카드 안: 포스터 → 제목 → 정보(년도/장르/별점) 세로 배치
+=================================================== */
+.list-container {
+    display: flex;
+    flex-wrap: wrap;
+    /* 왼쪽부터 채우고 넘치면 다음 줄로 */
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.list-container .card.reviews {
+    width: 200px;
+    /* 카드 하나 너비 */
+    background-color: #e5e7eb;
+    /* 회색 배경 카드 */
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    /* 포스터 → 제목 → 정보 세로로 */
+    align-items: center;
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.list-container .card.reviews:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.list-container .poster img {
+    width: 150px;
+    height: 220px;
+    object-fit: cover;
+    /* 비율 안 깨지게 채움 */
+    border-radius: 6px;
+    background-color: #d1d5db;
+}
+
+.list-container .list-movie-title {
+    margin-top: 12px;
+    text-align: center;
+    font-size: 17px;
+}
+
+.list-container .list-movie-title a {
+    text-decoration: none;
+    color: #111827;
+}
+
+.list-container .list-movie-title a:hover {
+    color: #f77cc2;
+}
+
+/* 카드 안쪽 정보 묶음 (년도/장르/별점) */
+.list-container .card.reviews>.list-movie-data>.list-movie-data {
+    margin-top: 8px;
+    width: 100%;
+    text-align: center;
+}
+
+.list-container .card.reviews p {
+    font-size: 14px;
+    color: #4b5563;
+    margin-top: 2px;
+}
+
+/* ===================================================
+   2. 작성 / 수정 페이지
+   - 입력 폼이 한 줄에 하나씩 (label 위, input 아래)
+=================================================== */
+.create-container {
+    display: flex;
+    justify-content: center;
+}
+
+.card.create-review {
+    width: 100%;
+    max-width: 500px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    /* 각 항목이 세로로 = 한 줄에 하나 */
+}
+
+.form-group img {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    margin-top: 16px;
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #374151;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #f77cc2;
+}
+
+.form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* 수정 폼의 현재 포스터 미리보기 */
+.form-group img {
+    margin-top: 8px;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+.card.create-review button[type="submit"] {
+    margin-top: 24px;
+    width: 100%;
+    padding: 12px;
+    background-color: #f77cc2;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.card.create-review button[type="submit"]:hover {
+    background-color: #f77cc2;
+}
+
+/* ===================================================
+   3. 디테일 페이지
+   - 가운데 포스터 → 제목 → 정보 나열 → 맨 아래 리뷰 텍스트
+=================================================== */
+.detail-container {
+    max-width: 640px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* 상단 */
+.detail-container .top {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 0;
+}
+
+.detail-container .detail-info .list-movie-title {
+    font-size: 26px;
+    margin-bottom: 12px;
+}
+
+.btn-container {
+    display: flex;
+    gap: 8px;
+}
+
+.btn {
+    text-decoration: none;
+    padding: 8px 8px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+.btn.delete {
+    color: #ef4444;
+}
+
+.btn.edit {
+    color: black;
+}
+
+.btn:hover {
+    text-decoration: underline;
+}
+
+.detail-container .middle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.detail-img img {
+    width: 220px;
+    height: 320px;
+    object-fit: cover;
+    border-radius: 0;
+    background-color: #e5e7eb;
+    margin-top: 0;
+}
+
+.detail-info {
+    margin-top: 12px;
+    width: 100%;
+    text-align: center;
+}
+
+.detail-info p {
+    font-size: 15px;
+    color: #374151;
+    padding: 6px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.detail-info p:last-child {
+    border-bottom: none;
+}
+
+/* 맨 아래: 리뷰 텍스트 */
+.detail-container .bottom {
+    margin-top: 12px;
+}
+
+.description {
+    background-color: #f9fafb;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.detail-movie-description {
+    font-size: 15px;
+    line-height: 1.8;
+    color: #1f2937;
+    white-space: pre-wrap;
+}
+
+.delete-container {
+    max-width: 480px;
+    margin: 60px auto 0;
+    /* 위 여백 + 가운데 정렬 */
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 40px 32px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+.delete-container h1 {
+    font-size: 22px;
+    color: #1f2937;
+    margin-bottom: 12px;
+}
+
+.delete-container p {
+    font-size: 15px;
+    color: #4b5563;
+    margin-bottom: 28px;
+}
+
+/* 버튼 두 개 가로로 가운데 정렬 */
+.delete-container form {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+/* 삭제 버튼 (빨강) */
+.btn-delete {
+    padding: 10px 24px;
+    background-color: #ef4444;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-delete:hover {
+    background-color: #dc2626;
+}
+
+/* 취소 버튼 (회색, 링크지만 버튼처럼) */
+.btn-back {
+    padding: 10px 24px;
+    background-color: #e5e7eb;
+    color: #374151;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    /* 링크 텍스트 세로 가운데 */
+}
+
+.btn-back:hover {
+    background-color: #d1d5db;
+}
+
+.sort-bar {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: -16px;
+    padding-bottom: 12px;
+    padding-right: 32px;
+}
+
+.sort-bar a {
+    text-decoration: none;
+    color: #4b5563;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.sort-bar a:hover {
+    color: #f77cc2;
+}
+
+.sort-bar a.active {
+    color: #f77cc2;
+}
