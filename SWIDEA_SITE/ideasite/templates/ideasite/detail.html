@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ idea.title }}{% endblock %}
+
+{% block content %}
+<h1>{{ idea.title }}</h1>
+
+{% if idea.image %}
+<img src="{{ idea.image.url }}" alt="{{ idea.title }}" style="max-width: 100px;">
+{% endif %}
+
+<p>{{ idea.content }}</p>
+<p>개발툴:
+    <a href="{% url 'ideasite:devtool_detail' idea.devtool.id %}">
+        {{ idea.devtool.dev_name }}
+    </a>
+</p>
+<p>관심도: {{ idea.interest }}</p>
+<p>좋아요: {{ idea.idea_stars.count }}</p>
+<p>등록일: {{ idea.registered_at }}</p>
+
+<a href="{% url 'ideasite:delete' idea.id %}">
+    <button>삭제</button>
+</a>
+<a href="{% url 'ideasite:edit' idea.id %}">
+    <button>수정</button>
+</a>
+<a href="{% url 'ideasite:list' %}">
+    <button>목록으로</button>
+</a>
+{% endblock %}

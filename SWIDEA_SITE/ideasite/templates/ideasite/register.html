@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}아이디어 등록{% endblock %}
+
+{% block content %}
+<h1>아이디어 등록</h1>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">등록</button>
+</form>
+{% endblock %}

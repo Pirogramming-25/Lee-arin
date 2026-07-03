@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}MY SW Idea Manage{% endblock %}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: sans-serif;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+
+        }
+
+        /* NavBar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 32px;
+            color: black;
+            border-bottom: 1px solid #bab8b8;
+        }
+
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: steelblue;
+            text-decoration: none;
+        }
+
+        .navbar .menu {
+            display: flex;
+            gap: 24px;
+        }
+
+        .navbar .menu a {
+            color: black;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .navbar .menu a:hover {
+            color: steelblue;
+        }
+
+        /* Body */
+        .content {
+            padding: 32px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <a href="{% url 'ideasite:list' %}" class="logo">MY SW Idea Manage</a>
+        <div class="menu">
+            <a href="{% url 'ideasite:register' %}">아이디어 등록</a>
+            <a href="{% url 'ideasite:list' %}">아이디어 관리</a>
+            <a href="{% url 'ideasite:devtool_register' %}">개발툴 등록</a>
+            <a href="{% url 'ideasite:devtool_list' %}">개발툴 관리</a>
+        </div>
+    </nav>
+
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+
+</html>
