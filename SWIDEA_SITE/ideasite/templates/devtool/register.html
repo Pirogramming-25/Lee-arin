@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}개발툴 등록{% endblock %}
+
+{% block content %}
+<h1>개발툴 등록</h1>
+
+<form method="post">
+    {% csrf_token %}
+    <p>이름: <input type="text" name="dev_name"></p>
+    <p>종류: <input type="text" name="dev_kind"></p>
+    <p>설명: <textarea name="dev_content"></textarea></p>
+    <button type="submit">등록</button>
+</form>
+{% endblock %}

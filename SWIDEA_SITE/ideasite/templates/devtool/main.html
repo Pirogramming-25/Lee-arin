@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}개발툴 관리{% endblock %}
+
+{% block content %}
+<h1>개발툴 목록</h1>
+
+{% for devtool in devtools %}
+<div style="border: 1px solid #ccc; padding: 16px; margin-bottom: 12px;">
+    <a href="{% url 'ideasite:devtool_detail' devtool.id %}">
+        <h3>{{ devtool.dev_name }}</h3>
+    </a>
+    <p>종류: {{ devtool.dev_kind }}</p>
+</div>
+{% empty %}
+<p>등록된 개발툴이 없습니다.</p>
+{% endfor %}
+{% endblock %}

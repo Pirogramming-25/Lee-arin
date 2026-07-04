@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}아이디어 관리{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: flex-end; gap: 16px; margin-bottom: 10px; margin-top: -20px;">
+    <a href="?sort=newest" style="{% if sort == 'newest' %}font-weight:bold; color:steelblue;{% endif %}">최신순</a>
+    <a href="?sort=oldest" style="{% if sort == 'oldest' %}font-weight:bold; color:steelblue;{% endif %}">오래된순</a>
+    <a href="?sort=name" style="{% if sort == 'name' %}font-weight:bold; color:steelblue;{% endif %}">이름순</a>
+</div>
+
+<h1>아이디어 목록</h1>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px;">
+    {% for idea in ideas %}
+    <div style="border: 1px solid #ccc; padding: 16px; width: 220px;">
+        <a href="{% url 'ideasite:detail' idea.id %}">
+            {% if idea.image %}
+            <img src="{{ idea.image.url }}" alt="{{ idea.title }}"
+                style="width: 100%; height: 150px; object-fit: cover;">
+            {% endif %}
+            <h3>{{ idea.title }}</h3>
+        </a>
+        <p>개발툴:
+            <a href="{% url 'ideasite:devtool_detail' idea.devtool.id %}">{{ idea.devtool.dev_name }}</a>
+        </p>
+
+        <button onclick="changeInterest({{ idea.id }}, 'down')">-</button>
+        <span id="interest-count-{{ idea.id }}">{{ idea.interest }}</span>
+        <button onclick="changeInterest({{ idea.id }}, 'up')">+</button>
+
+        <button onclick="toggleStar({{ idea.id }})" id="star-btn-{{ idea.id }}">
+            {% if idea.id in starred_ideas %}★{% else %}☆{% endif %}
+        </button>
+    </div>
+    {% empty %}
+    <p>등록된 아이디어가 없습니다.</p>
+    {% endfor %}
+</div>
+
+<script>
+    function changeInterest(ideaId, action) {
+        fetch("/interest/" + ideaId + "/", {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}",
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: "action=" + action,
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("interest-count-" + ideaId).textContent = data.interest;
+            });
+    }
+
+    function toggleStar(ideaId) {
+        fetch("/star/" + ideaId + "/", {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}",
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("star-btn-" + ideaId).textContent = data.liked ? "★" : "☆";
+                // star-count 갱신 줄 삭제
+            });
+    }
+</script>
+{% endblock %}
