@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="story-tray">
+  <a href="{% url "stories:create" %}" class="story-item">
+    {% if user.profile_image %}<img src="{{ user.profile_image.url }}" class="avatar story-add">{% else %}<span class="avatar avatar-default story-add"></span>{% endif %}
+    <span>스토리+</span>
+  </a>
+  {% for story in stories %}
+  <a href="{% url "stories:detail" story.pk %}" class="story-item">
+    {% if story.author.profile_image %}<img src="{{ story.author.profile_image.url }}" class="avatar story-ring">{% else %}<span class="avatar avatar-default story-ring"></span>{% endif %}
+    <span>{{ story.author.username }}</span>
+  </a>
+  {% endfor %}
+</section>
+
+<form method="get" class="sort-bar">
+  {% if query %}<input type="hidden" name="q" value="{{ query }}">{% endif %}
+  <strong>게시글 정렬기준:</strong>
+  <select name="sort">
+    <option value="recent" {% if sort == "recent" %}selected{% endif %}>최신순</option>
+    <option value="likes" {% if sort == "likes" %}selected{% endif %}>좋아요</option>
+  </select>
+  <button type="submit" class="btn-pill">정렬하기</button>
+</form>
+
+{% for post in posts %}
+<article class="post-card" data-post-id="{{ post.pk }}">
+  <header class="post-header">
+    <a href="{% url "accounts:profile" post.author.username %}">
+      {% if post.author.profile_image %}<img src="{{ post.author.profile_image.url }}" class="avatar">{% else %}<span class="avatar avatar-default"></span>{% endif %}
+      <strong>{{ post.author.username }}</strong>
+    </a>
+    {% if post.author == user %}
+    <div class="post-actions">
+      <a href="{% url "posts:update" post.pk %}">수정</a>
+      <form action="{% url "posts:delete" post.pk %}" method="post" onsubmit="return confirm(\"삭제할까요?\")">
+        {% csrf_token %}
+        <button type="submit">삭제</button>
+      </form>
+    </div>
+    {% endif %}
+  </header>
+
+  <img src="{{ post.image.url }}" class="post-image">
+
+  <div class="post-body">
+    <button class="like-btn {% if user in post.likes.all %}liked{% endif %}"
+            data-url="{% url "posts:like" post.pk %}">♥</button>
+    <p class="like-count">좋아요 <span>{{ post.like_count }}</span>개</p>
+    <p><strong>{{ post.author.username }}</strong> {{ post.content }}</p>
+
+    <ul class="comment-list">
+      {% for comment in post.comments.all %}
+      <li data-comment-id="{{ comment.pk }}"
+          data-update-url="{% url "posts:comment_update" comment.pk %}"
+          data-delete-url="{% url "posts:comment_delete" comment.pk %}">
+        <strong>{{ comment.author.username }}</strong>
+        <span class="comment-content">{{ comment.content }}</span>
+        {% if comment.author == user %}
+        <button class="comment-edit">수정</button>
+        <button class="comment-delete">삭제</button>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+
+    <form class="comment-form" data-url="{% url "posts:comment_create" post.pk %}">
+      <input type="text" name="content" placeholder="댓글 달기..." autocomplete="off">
+      <button type="submit">게시</button>
+    </form>
+  </div>
+</article>
+{% empty %}
+<p class="muted empty-feed">
+  {% if query %}"{{ query }}" 검색 결과가 없습니다.{% else %}아직 게시물이 없습니다!<br>유저를 검색해서 팔로우해 보세요!{% endif %}
+</p>
+{% endfor %}
+{% endblock %}
+
+{% block aside %}
+<aside class="rightbar">
+  <div class="me-row">
+    {% if user.profile_image %}<img src="{{ user.profile_image.url }}" class="avatar avatar-md">{% else %}<span class="avatar avatar-md avatar-default"></span>{% endif %}
+    <strong>{{ user.username }}</strong>
+    <form action="{% url "accounts:logout" %}" method="post">
+      {% csrf_token %}
+      <button type="submit" class="link-blue">전환</button>
+    </form>
+  </div>
+  <p class="muted suggest-title">다른 사용자 추천</p>
+  <ul class="suggest-list">
+    {% for u in suggested_users %}
+    <li>
+      <a href="{% url "accounts:profile" u.username %}">
+        {% if u.profile_image %}<img src="{{ u.profile_image.url }}" class="avatar avatar-md">{% else %}<span class="avatar avatar-md avatar-default"></span>{% endif %}
+        <strong>{{ u.username }}</strong>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</aside>
+{% endblock %}

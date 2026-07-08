@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="search-page">
+  <form method="get">
+    <input type="text" name="q" value="{{ query }}" placeholder="아이디 또는 이름 검색" autofocus>
+    <button type="submit" class="btn-primary">검색</button>
+  </form>
+  <ul class="user-list">
+    {% for u in users %}
+    <li>
+      <a href="{% url "accounts:profile" u.username %}">
+        {% if u.profile_image %}<img src="{{ u.profile_image.url }}" class="avatar">{% else %}<span class="avatar avatar-default"></span>{% endif %}
+        <strong>{{ u.username }}</strong> <span class="muted">{{ u.name }}</span>
+      </a>
+    </li>
+    {% empty %}
+    {% if query %}<li class="muted">검색 결과가 없습니다.</li>{% endif %}
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="auth-box">
+  <h2>회원가입</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn-primary">가입하기</button>
+  </form>
+  <p><a href="{% url "accounts:login" %}">로그인</a></p>
+</div>
+{% endblock %}
