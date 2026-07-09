@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pirostargram</title>
+  <link rel="stylesheet" href="{% static "css/style.css" %}">
+</head>
+<body>
+  {% if user.is_authenticated %}
+  <nav class="sidebar">
+    <h1 class="logo"><a href="{% url "posts:feed" %}">Pirostargram</a></h1>
+
+    <a class="nav-item" href="{% url "posts:feed" %}">
+      <svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V21h-6v-6h-6v6H3z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      홈
+    </a>
+
+    <div class="nav-item nav-label">
+      <svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="1.6"/></svg>
+      게시글 검색
+    </div>
+    <form action="{% url "posts:feed" %}" method="get" class="sidebar-search">
+      <input type="text" name="q" value="{{ query }}">
+      <button type="submit" class="btn-pill">검색</button>
+    </form>
+
+    <div class="nav-item nav-label">
+      <svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="1.6"/></svg>
+      유저 검색
+    </div>
+    <form action="{% url "accounts:search" %}" method="get" class="sidebar-search">
+      <input type="text" name="q">
+      <button type="submit" class="btn-pill">검색</button>
+    </form>
+
+    <a class="nav-item" href="{% url "posts:create" %}">
+      <svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="1.6"/></svg>
+      게시글 만들기
+    </a>
+
+    <a class="nav-item" href="{% url "accounts:profile" user.username %}">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M4.5 20c1.5-3.5 4.3-5 7.5-5s6 1.5 7.5 5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+      프로필
+    </a>
+  </nav>
+  {% endif %}
+  <main class="content">
+    {% block content %}{% endblock %}
+  </main>
+  {% block aside %}{% endblock %}
+  <script src="{% static "js/main.js" %}"></script>
+</body>
+</html>

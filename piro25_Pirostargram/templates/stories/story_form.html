@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="auth-box">
+  <h2>스토리 올리기</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="images" accept="image/*" multiple required>
+    <button type="submit" class="btn-primary">공유</button>
+  </form>
+</div>
+{% endblock %}

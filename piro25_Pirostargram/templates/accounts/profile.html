@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="profile-header">
+  {% if profile_user.profile_image %}<img src="{{ profile_user.profile_image.url }}" class="avatar avatar-xl">{% else %}<span class="avatar avatar-xl avatar-default"></span>{% endif %}
+  <div class="profile-info">
+    <div class="profile-top">
+      <h2>{{ profile_user.username }}</h2>
+      {% if profile_user == user %}
+      <a href="{% url "accounts:profile_edit" %}" class="btn-gray">프로필 수정하기</a>
+      {% else %}
+      <button id="follow-btn" class="btn-blue {% if is_following %}following{% endif %}"
+              data-url="{% url "accounts:follow" profile_user.username %}">
+        {% if is_following %}팔로잉{% else %}팔로우{% endif %}
+      </button>
+      {% endif %}
+    </div>
+    <p class="profile-stats">
+      게시물 {{ posts.count }} &nbsp;
+      팔로워 <span id="follower-count">{{ profile_user.followers.count }}</span> &nbsp;
+      팔로우 {{ profile_user.followings.count }}
+    </p>
+    <p class="profile-bio">{% if profile_user.bio %}{{ profile_user.bio|linebreaksbr }}{% else %}소개글이 없습니다.{% endif %}</p>
+  </div>
+</div>
+
+{% if posts %}
+<div class="profile-grid">
+  {% for post in posts %}<img src="{{ post.image.url }}" alt="">{% endfor %}
+</div>
+{% else %}
+<p class="empty-profile">
+  아직 게시물이 없습니다!<br>
+  {% if profile_user == user %}나만의 게시물을 만들어보세요!{% endif %}
+</p>
+{% endif %}
+{% endblock %}

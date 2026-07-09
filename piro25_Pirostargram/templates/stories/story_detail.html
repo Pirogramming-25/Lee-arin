@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="story-viewer" id="story-viewer">
+  <div class="story-progress">
+    {% for img in story.images.all %}<span class="bar" data-index="{{ forloop.counter0 }}"></span>{% endfor %}
+  </div>
+  <p class="story-author">{{ story.author.username }}</p>
+  {% for img in story.images.all %}
+  <img src="{{ img.image.url }}" class="story-img {% if forloop.first %}active{% endif %}" data-index="{{ forloop.counter0 }}">
+  {% endfor %}
+  <button class="story-nav prev">‹</button>
+  <button class="story-nav next">›</button>
+</div>
+{% endblock %}
