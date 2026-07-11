@@ -1,0 +1,45 @@
+# compose로 실행할 컨테이너 묶음을 정의
+services:
+
+  db:
+    image: mysql:8.4
+    container_name: pirostargram-db
+
+    env_file:
+      - .env
+
+    volumes:
+      - pirostargram-mysql-data:/var/lib/mysql
+
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  web:
+    build: .
+    image: ethan0587/pirostargram-site:mysql
+    container_name: pirostargram-web
+
+    # web보다 db를 먼저 실행 -> Django가 실행될 때 db를 인식하기 위해서
+    # db가 정상 준비 완료 상태가 될 때까지 기다렸다가 실행
+    depends_on:
+      db:
+        condition: service_healthy
+
+    # port 설정
+    ports:
+      - "8000:8000"
+
+    # Django 컨테이너에 .env 값 주입
+    env_file:
+      - .env
+
+    # 업로드 파일을 media 폴더에 저장
+    volumes:
+      - ./media:/app/media
+
+# MySQL 데이터를 저장할 volume 정의
+volumes:
+  pirostargram-mysql-data:
